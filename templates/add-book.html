@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Yangi oyinchi qoshish
+{% endblock %}
+
+{% block content %}
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    Name of player: <input type="text" name="book_name" id=""> <br>
+    Description of book: <textarea name="book_desc" id="" cols="30" rows="10" minlength="45" ></textarea> <br><br>
+    
+    Image of book: <input type="file" name="image" accept=".jpg, .png, .jpeg">
+    <br>
+    <input type="submit" value="Ok">
+</form>
+{% endblock %}

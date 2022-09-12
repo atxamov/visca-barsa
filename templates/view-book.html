@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{player.name}}
+{% endblock %}
+
+{% block content %}
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="id" value="{{book.id}}">
+    Name of book: <input type="text" name="book_name" value="{{book.name}}"> <br>
+    Image of book: <input type="file" name="image" accept=".jpg, .png, .jpeg" value="{{book.image}}">
+    <br>
+    Description of book: <textarea name="book_desc" id="" cols="30" rows="10">{{book.description}}</textarea> <br><br>
+    
+    <input type="submit" value="Save">
+</form>
+<br>
+<a href="{% url 'delete-book' book.id %}">Delete</a>
+{% endblock %}

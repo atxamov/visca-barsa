@@ -1,0 +1,23 @@
+.toggle {
+width: 50px;
+margin: 1px 0 10px 74px;
+text-align: center;
+}
+.toggle .content {
+text-align: center;
+border: auto solid #ccc;
+background: #eee;
+margin: 1px 1px 1px 5px;
+}
+.toggle .toggler {
+font-size: 11px;
+}
+
+.toggler {
+	display: inline-block;
+    background: #50B9B9;
+    color: #fff;
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    border-radius: 3px;
+}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Mavjud kitoblar
+{% endblock %}
+
+{% block css_styles %}
+<link rel="stylesheet" href="{% static 'css/search_filter_css.css'%}" type="text/css">
+{% endblock %}
+
+{% block head %}
+    <style>
+      .button {
+      background-color: #ff0000;
+      border: none;
+      color: white;
+      padding: 20px 34px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 4px 2px;
+      cursor: pointer;
+      }
+    </style>
+{% endblock %}
+{% block content %}
+    {% for item in books %}
+            <figure class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
+                       <a href="{% url 'view-book' item.id %}">
+                                <div class="tm-gallery-item-overlay">
+                                    <img src="{{item.image.url}}" alt="{{item.name}}" class="img-fluid tm-img-center" width="220" height="340">
+                                </div>
+                                
+                                <p class="tm-figcaption" style="text-align: center;">{{item.name}}</p>
+                                <p class="tm-figcaption">{{item.description | truncatewords:60}}</p>
+                            </a>
+            </figure>
+                    <br>
+    {% endfor %} 
+    <br>
+    <div class="container3">
+        <form action="" method="get">
+        <input type="text" maxlength= "12" placeholder="Search" class="searchbar" name="name__icontains">
+        <input type="image" src="\media\virus-images\poisk.png" alt="Submit Form" class="button"/>
+        <div class="toggle">
+            <div class="content"> <input type="checkbox" name="date__range">Filter_by_date_create</div>
+            <a class="toggler">Filter</a>
+        </div>
+    <div>
+    <a href="{% url 'add-book' %}" class="button">Add player</a>
+    </div>
+{% endblock %}
