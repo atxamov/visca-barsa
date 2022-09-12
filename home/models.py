@@ -32,7 +32,7 @@ class Journalist(models.Model):
 
     def __str__(self) -> str:
         return self.name   
-        
+
 class Mananger(models.Model):
     name = models.CharField(max_length=200)
     country = models.CharField(max_length=100)
@@ -41,7 +41,7 @@ class Mananger(models.Model):
 
     def __str__(self) -> str:
         return self.name   
-
+        
 class NationalT(models.Model):
     name = models.CharField(max_length=200)
     country = models.CharField(max_length=100)
