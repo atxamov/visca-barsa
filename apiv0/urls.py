@@ -15,18 +15,28 @@ Including another URLconf
 """
 from django.urls import path
 from .views import *
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView
+)
+from rest_framework import routers
+
+router = routers.SimpleRouter()
+
+router.register(r'publishers', PublisherViewSet)
+router.register(r'book', BookViewSet)
+router.register(r'journalist', JournalistViewSet)
+router.register(r'mananger', ManangerViewSet)
+router.register(r'national', NationalTViewSet)
 
 urlpatterns = [
-    path('books/', BookListAPIView.as_view(), name='get-books'),
-    path('books/create/', BookCreateAPIView.as_view(), name='create-book'),
-    path('books/get-update-delete/<int:pk>/', BookRetrieveUpdateDestroyAPIView.as_view(), name='update-book'),
-    path('publisher/', PublisherListAPIView.as_view(), name='get-publisher'),
-    path('publisher/create/', PublisherCreateAPIView.as_view(), name='create-publisher'),
-    path('publisher/get-update-delete/<int:pk>/', PublisherRetrieveUpdateDestroyAPIView.as_view(), name='update-publisher'),
-    path('jurnalist/', JurnalistListAPIView.as_view(), name='get-jurnalist'),
-    path('jurnalist/create/', JurnalistCreateAPIView.as_view(), name='create-jurnalist'),
-    path('jurnalist/get-update-delete/<int:pk>/', JurnalistRetrieveUpdateDestroyAPIView.as_view(), name='update-jurnalist'),
-    path('mananger/', ManangerListAPIView.as_view(), name='get-mananger'),
-    path('mananger/create/', ManangerCreateAPIView.as_view(), name='create-mananger'),
-    path('mananger/get-update-delete/<int:pk>/', ManangerRetrieveUpdateDestroyAPIView.as_view(), name='update-mananger'),
-]
+    # Auth part    
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+
+    # Loading and Download data from excell
+    path('load-data-excel/', load_data_excell, name='load-data-excel'),
+
+] + router.urls

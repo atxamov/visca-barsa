@@ -1,93 +1,72 @@
-from re import template
-from home.models import Book
-from .serializers import BookSerializer
+from home.models import *
+from .serializers import *
 
-from rest_framework import generics
+from rest_framework.decorators import api_view
+from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import BasePermission, \
+    IsAuthenticated, SAFE_METHODS, DjangoModelPermissions
+
+from rest_framework.response import Response
+
+class ReadOnly(BasePermission):
+    def has_permission(self, request, view):
+        return request.method in SAFE_METHODS
 
 
-class BookListAPIView(generics.ListAPIView):
+class BookViewSet(viewsets.ModelViewSet):
+
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     pagination_class = PageNumberPagination
-    
+    # permission_classes = [DjangoModelPermissions]
 
+class PublisherViewSet(viewsets.ModelViewSet):
 
-class BookCreateAPIView(generics.CreateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
-
-class BookRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
-
-class PublisherListAPIView(generics.ListAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
+    queryset = Publisher.objects.all()
+    serializer_class = PublisherSerializer
     pagination_class = PageNumberPagination
 
 
-class PublisherCreateAPIView(generics.CreateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
+class JournalistViewSet(viewsets.ModelViewSet):
 
-class PublisherRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
+    queryset = Journalist.objects.all()
+    serializer_class = JournalistSerializer
+    pagination_class = PageNumberPagination
 
 
-class JurnalistListAPIView(generics.ListAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
+class ManangerViewSet(viewsets.ModelViewSet):
+
+    queryset = Mananger.objects.all()
+    serializer_class = ManangerSerializer
+    pagination_class = PageNumberPagination
+
+class NationalTViewSet(viewsets.ModelViewSet):
+
+    queryset = NationalT.objects.all()
+    serializer_class = NationalTSerializer
     pagination_class = PageNumberPagination
 
 
 
-class JurnalistCreateAPIView(generics.CreateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
-class JurnalistRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
+from django.contrib.auth.models import Group
+from rest_framework import viewsets
+class GroupViewSet(viewsets.ModelViewSet):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
 
 
-class ManangerListAPIView(generics.ListAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    pagination_class = PageNumberPagination
+@api_view(['POST'])
+def load_data_excell(request):
+    try:
+        import openpyxl
+        import io
 
+        file = request.FILES['file']
+        wb = openpyxl.Workbook(filename=file)
+        wsh = wb.active
+        print(wsh['A1'].value)
 
-class ManangerCreateAPIView(generics.CreateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
-
-class ManangerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
-
-class NationalTListAPIView(generics.ListAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    pagination_class = PageNumberPagination
-
-
-class NationalTCreateAPIView(generics.CreateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
-
-class NationalTRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
-
+        return Response('Ok', status=200)
+    except Exception as exc:
+        return Response(str(exc.with_traceback()), status=200)
